@@ -12,19 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('businesses', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id');
             $table->string('name');
             $table->string('address');
             $table->string('postal_code');
             $table->string('city');
             $table->bigInteger('siret');
-            $table->unsignedBigInteger('craft_id');
-            $table->unsignedBigInteger('specialty_id');
+            $table->foreignUuid('craft_id');
+            $table->foreignUuid('specialty_id');
             $table->string('website');
             $table->string('biography');
             $table->string('history');
-            $table->unsignedBigInteger('theme_id');
+            $table->foreignUuid('theme_id');
             $table->timestamps();
             $table->foreign('craft_id')
                 ->references('id')
