@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('city');
             $table->bigInteger('siret');
             $table->foreignUuid('craft_id');
-            $table->foreignUuid('specialty_id');
+//            $table->foreignUuid('specialty_id');
             $table->string('website');
             $table->string('biography');
             $table->string('history');
@@ -30,10 +30,10 @@ return new class extends Migration
                 ->references('id')
                 ->on('crafts')
                 ->onDelete('cascade');
-            $table->foreign('specialty_id')
-                ->references('id')
-                ->on('specialties')
-                ->onDelete('cascade');
+//            $table->foreign('specialty_id')
+//                ->references('id')
+//                ->on('specialties')
+//                ->onDelete('cascade');
             $table->foreign('theme_id')
                 ->references('id')
                 ->on('themes')
