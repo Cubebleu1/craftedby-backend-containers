@@ -11,6 +11,9 @@ class Specialty extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $table = 'specialties';
+    protected $fillable = ['name'];
+
     public function businesses() : HasMany
     {
         return $this->hasMany(Business::class, 'craft_id');
