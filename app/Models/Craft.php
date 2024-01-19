@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Craft extends Model
 {
-    use HasFactory, HasUuids;
+    use HasUuids, HasFactory;
 
     protected $table = 'crafts';
     protected $fillable = ['name'];

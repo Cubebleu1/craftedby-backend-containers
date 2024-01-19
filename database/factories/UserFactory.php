@@ -2,12 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Faker\Factory as Faker;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
@@ -16,6 +18,8 @@ class UserFactory extends Factory
      */
     protected static ?string $password;
 
+
+
     /**
      * Define the model's default state.
      *
@@ -23,11 +27,17 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = Faker::create('fr_FR');
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'last_name' => $faker->lastName,
+            'first_name' => $faker->firstName,
+            'address' => $faker->streetAddress,
+            'postal_code' => $faker->postcode,
+            'city' => $faker->city,
+            'phone_number' => $faker->phoneNumber,
+            'email' => $faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => static::$password??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
     }

@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('address');
             $table->string('postal_code');
             $table->string('city');
+            $table->string('email')->unique();
+            $table->string('phone_number');
             $table->bigInteger('siret');
             $table->foreignUuid('craft_id');
-//            $table->foreignUuid('specialty_id');
             $table->string('website');
             $table->string('biography');
             $table->string('history');
@@ -30,10 +31,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('crafts')
                 ->onDelete('cascade');
-//            $table->foreign('specialty_id')
-//                ->references('id')
-//                ->on('specialties')
-//                ->onDelete('cascade');
             $table->foreign('theme_id')
                 ->references('id')
                 ->on('themes')
