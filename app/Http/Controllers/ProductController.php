@@ -8,9 +8,27 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $products = Product::all();
+        //Query builder instance for Product model
+        $query = Product::query();
+
+        // Search for products by name or other attributes
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            //LIKE operator for a partial match search
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+        // Filter by category
+        if ($request->has('category')) {
+            $category = $request->input('category');
+            //Wherehas for querying relationships
+            $query->whereHas('categories', function ($query) use ($category) {
+                $query->where('name', $category);
+            });
+        }
+        //Execute query and get results
+        $products = $query->get();
         return response()->json($products);
     }
 
