@@ -15,13 +15,14 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->bigInteger('order_number');
             $table->foreignUuid('user_id');
-            $table->decimal('price');
+            $table->decimal('total_without_tax');
             $table->decimal('tax_amount');
+            $table->decimal('total_tax_included');
             $table->boolean('payment_status');
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
-                ->on('businesses')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

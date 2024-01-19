@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Faker\Factory as Faker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,10 @@ class ReviewFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = Faker::create('fr_FR');
         return [
-            //
+            'rating' => rand(3, 5),
+            'comment'=> $faker->text(50),
         ];
     }
 }
