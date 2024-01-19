@@ -27,6 +27,20 @@ class ProductController extends Controller
                 $query->where('name', $category);
             });
         }
+        //Filter vy color
+        if ($request->has('color')) {
+            $color = $request->input('color');
+            $query->whereHas('color', function ($query) use ($color) {
+                $query->where('name', $color);
+            });
+        }
+        //Filter by material
+        if ($request->has('material')) {
+            $material = $request->input('material');
+            $query->whereHas('material', function ($query) use ($material) {
+                $query->where('name', $material);
+            });
+        }
         //Execute query and get results
         $products = $query->get();
         return response()->json($products);
