@@ -30,7 +30,7 @@ class BusinessSeeder extends Seeder
                 ];
             })
             ->afterCreating(function (Business $business) {
-                $specialties = Specialty::inRandomOrder()->take(1)->get();
+                $specialties = Specialty::inRandomOrder()->take(2)->get();
                 $business->specialties()->attach($specialties);
             })
             ->create();

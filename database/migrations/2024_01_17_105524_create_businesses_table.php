@@ -23,8 +23,8 @@ return new class extends Migration
             $table->bigInteger('siret');
             $table->foreignUuid('craft_id');
             $table->string('website');
-            $table->string('biography');
-            $table->string('history');
+            $table->text('biography');
+            $table->text('history');
             $table->foreignUuid('theme_id');
             $table->timestamps();
             $table->foreign('craft_id')

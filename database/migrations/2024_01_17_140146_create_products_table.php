@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->foreignUuid('material_id');
             $table->string('size');
+            $table->decimal('weight');
             $table->foreignUuid('color_id');
             $table->boolean('customisable');
             $table->string('image_path');

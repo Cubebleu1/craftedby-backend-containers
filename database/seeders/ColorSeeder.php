@@ -27,7 +27,7 @@ class ColorSeeder extends Seeder
 
 
         foreach ($colors as $color) {
-            Color::create([
+            Color::firstOrCreate([
                 'name' => $color,
             ]);
         }

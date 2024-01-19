@@ -32,7 +32,7 @@ class CraftSeeder extends Seeder
         ];
 
         foreach ($crafts as $craft) {
-            Craft::create([
+            Craft::firstOrCreate([
                 'name' => $craft,
             ]);
         }

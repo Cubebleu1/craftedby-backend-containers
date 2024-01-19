@@ -23,7 +23,6 @@ class BusinessFactory extends Factory
     {
         $faker = Faker::create('fr_FR');
         return [
-//            'user_id' =>
             'name' => $faker->company,
             'address' => $faker->streetAddress,
             'postal_code' => $faker->postcode,
@@ -31,11 +30,9 @@ class BusinessFactory extends Factory
             'email' => $faker->unique()->safeEmail,
             'phone_number' => $faker->phoneNumber,
             'siret' => '1234567890',
-//            'craft_id' => '',
             'website' => $faker->domainName,
-            'biography' => 'yoyo',
-            'history' => 'yolo',
-            'theme_id' => '1',
+            'biography' => $faker->text(100),
+            'history' => $faker->text(120),
         ];
     }
 }

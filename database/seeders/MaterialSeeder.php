@@ -28,7 +28,7 @@ class MaterialSeeder extends Seeder
 
 
         foreach ($materials as $material) {
-            Material::create([
+            Material::firstOrCreate([
                 'name' => $material,
             ]);
         }
