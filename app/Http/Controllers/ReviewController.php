@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -10,9 +11,25 @@ class ReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        $reviews = Review::all();
+        $query = Review::query();
+
+        //Search for (partial word) in comment
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            //LIKE operator for a partial match search
+            $query->where('comment', 'LIKE', "%{$search}%");
+        }
+
+        //Filter by rating
+        if ($request->has('rating')) {
+            $rating = $request->input('rating');
+                $query->where('rating', '=', $rating);
+        }
+
+        //Execute query and get results
+        $reviews = $query->get();
         return response()->json($reviews);
     }
 

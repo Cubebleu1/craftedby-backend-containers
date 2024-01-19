@@ -41,6 +41,13 @@ class ProductController extends Controller
                 $query->where('name', $material);
             });
         }
+        // Filter by rating
+        if ($request->has('rating')) {
+            $rating = $request->input('rating');
+            $query->whereHas('reviews', function ($q) use ($rating) {
+                $q->where('rating', '=', $rating);
+            });
+        }
         //Execute query and get results
         $products = $query->get();
         return response()->json($products);
