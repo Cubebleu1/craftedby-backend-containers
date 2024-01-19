@@ -26,7 +26,15 @@ class ProductController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
-            // Define validation rules
+            'business_id' => 'required|uuid',
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'material_id' => 'required|uuid',
+            'size' => 'required|string|max:100',
+            'color_id' => 'required|uuid',
+            'customisable' => 'required|boolean',
+            'image_path' => 'nullable|string|max:255'
         ]);
 
         $product = Product::create($validatedData);
@@ -41,7 +49,15 @@ class ProductController extends Controller
         }
 
         $validatedData = $request->validate([
-            // Define  validation rules
+            'business_id' => 'sometimes|uuid',
+            'name' => 'sometimes|string|max:255',
+            'price' => 'sometimes|numeric',
+            'stock' => 'sometimes|integer',
+            'material_id' => 'sometimes|uuid',
+            'size' => 'sometimes|string|max:100',
+            'color_id' => 'sometimes|uuid',
+            'customisable' => 'sometimes|boolean',
+            'image_path' => 'sometimes|nullable|string|max:255'
         ]);
 
         $product->update($validatedData);
