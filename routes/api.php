@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\BusinessController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BusinessesController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,14 +20,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
-Route::resource('products', ProductController::class);
+//UsersControllers routes
+Route::get('/users', [UsersController::class, 'index'])->middleware('auth:sanctum');
+Route::post('/users', [UsersController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/users/{id}', [UsersController::class, 'show'])->middleware('auth:sanctum');
+Route::put('/users/{id}', [UsersController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/users/{id}', [UsersController::class, 'destroy'])->middleware('auth:sanctum');
 
-Route::resource('categories', CategoryController::class);
+//Login and logout functionality
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::resource('reviews', ReviewController::class);
 
-Route::resource('businesses', BusinessController::class);
+Route::apiResource('products', ProductsController::class);
+
+Route::apiResource('categories', CategoriesController::class);
+
+Route::apiResource('reviews', ReviewsController::class);
+
+Route::apiResource('businesses', BusinessesController::class);
