@@ -6,7 +6,7 @@ use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ReviewController extends Controller
+class ReviewsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,7 +32,6 @@ class ReviewController extends Controller
         $reviews = $query->get();
         return response()->json($reviews);
     }
-
 
     /**
      * Show the form for creating a new resource.
