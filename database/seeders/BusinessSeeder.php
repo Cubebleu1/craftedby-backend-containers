@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Business;
 use App\Models\Craft;
+use App\Models\Role;
 use App\Models\Specialty;
 use App\Models\Theme;
 use App\Models\User;
@@ -32,6 +33,13 @@ class BusinessSeeder extends Seeder
             ->afterCreating(function (Business $business) {
                 $specialties = Specialty::inRandomOrder()->take(2)->get();
                 $business->specialties()->attach($specialties);
+
+                // Retrieve the business_owner role
+                $businessOwnerRole = Role::where('name', 'business_owner')->first();
+                // Assign the business_owner role to the user
+                if ($businessOwnerRole) {
+                    $business->user->roles()->attach($businessOwnerRole);
+                }
             })
             ->create();
     }

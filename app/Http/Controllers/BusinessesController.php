@@ -25,23 +25,7 @@ class BusinessesController extends Controller
 
     public function store(StoreBusinessRequest $request)
     {
-//        $validatedData = $request->validate([
-//            'user_id' => 'required|uuid',
-//            'name' => 'required|string|max:255',
-//            'address' => 'required|string|max:255',
-//            'postal_code' => 'required|string|max:10',
-//            'city' => 'required|string|max:255',
-//            'email' => 'required|email|max:255',
-//            'phone_number' => 'required|string|max:20',
-////            'siret' => 'required|numeric|digits:14',
-//            'craft_id' => 'required|uuid',
-//            'website' => 'nullable|url|max:255',
-//            'biography' => 'nullable|string',
-//            'history' => 'nullable|string',
-//            'theme_id' => 'required|uuid',
-//        ]);
         $validatedData = $request->validated();
-
 
         $business = Business::create($validatedData);
         return response()->json($business, 201);
@@ -83,7 +67,4 @@ class BusinessesController extends Controller
         $business->delete();
         return response()->json(['message' => 'Business deleted successfully']);
     }
-
-
-
 }

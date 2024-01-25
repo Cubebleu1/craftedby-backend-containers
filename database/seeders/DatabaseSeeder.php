@@ -16,6 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         //Delete all previous made fake images if any
         File::cleanDirectory(public_path('images/products'));
+
+        //Roles (admin, business_owner, regular_user
+        $this->call(RoleSeeder::class);
+
+        //10 new user with regular_user role only
+        $this->call(UserSeeder::class);
+
         //Businesses and associated tables (will create user for each business)
         $this->call(CraftSeeder::class);
         $this->call(ThemeSeeder::class);
