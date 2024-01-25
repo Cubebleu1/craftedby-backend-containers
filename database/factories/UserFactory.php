@@ -18,7 +18,18 @@ class UserFactory extends Factory
      */
     protected static ?string $password;
 
-
+    /**
+     * Indicate that the model's 'email' and 'password' should be set for an admin user.
+     */
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'email' => 'admin@admin.com',
+                'password' => bcrypt('password'),
+            ];
+        });
+    }
 
     /**
      * Define the model's default state.

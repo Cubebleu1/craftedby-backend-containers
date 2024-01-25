@@ -133,6 +133,45 @@ This documentation provides information on the API routes and endpoints availabl
 - `PUT /api/businesses/{id}`: Updates the details of a specific business.
 - `DELETE /api/businesses/{id}`: Deletes a specific business.
 
+## Creation of a User
+
+- `POST /api/users`: Creates a new user.
+
+With JSON body:
+
+```
+{
+    "first_name": "Yolo",
+    "last_name": "Doe",
+    "address" : "13, La Rue",
+    "postal_code" : "74000",
+    "city": "Annecy",
+    "phone_number": "0612345678",
+    "email": "john@xit.com",
+    "password": "password"
+}
+```
+
+Returns code 201 with body:
+
+```
+{
+    "message": "User successfully registered",
+    "created user": {
+        "first_name": "Yolo",
+        "last_name": "Doe",
+        "address": "13, La Rue",
+        "postal_code": "74000",
+        "city": "Annecy",
+        "phone_number": "0612345678",
+        "email": "john@xit.com",
+        "id": "9b2cf829-901f-44d0-bd9b-3cabf41b3ddb",
+        "updated_at": "2024-01-25T09:20:43.000000Z",
+        "created_at": "2024-01-25T09:20:43.000000Z"
+    }
+}
+```
+
 ## Authentication
 
 To authenticate with the API, you can send a POST request to the `/api/login` endpoint with the `email` and `password` parameters in the request body. 
@@ -143,9 +182,17 @@ Example response body:
 ``` 
 {
     "message": "Login successful",
-    "token": "9b2b46a2-d7fc-43ba-befe-cd35a8c40df6|h6IeVlSvqLU5hpLsSjygVpdxdnITD4edNRJ68jAjf219237e"
-} 
+    "token": "9b2cf968-f6f0-4846-9887-a3743718a7da|I5DzbQP9Bus8DT8TmWeFc5gHrlu7y9nr4vWrjXif42ea2383"
+}
 ```
+
+## Using API token
+
+In the case of wanting to use a protected rout where a regular_user can only view its own user data;
+
+E.g. `GET /api/users/{id}`: Returns the details of a specific user.
+ 
+The API token (Bearer token) should be sent with the request.
 
 ## Error Handling
 

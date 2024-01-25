@@ -20,7 +20,10 @@ class DatabaseSeeder extends Seeder
         //Roles (admin, business_owner, regular_user
         $this->call(RoleSeeder::class);
 
-        //10 new user with regular_user role only
+        //Create an admin
+        $this->call(AdminSeeder::class);
+
+        //10 new users with regular_user role only
         $this->call(UserSeeder::class);
 
         //Businesses and associated tables (will create user for each business)
