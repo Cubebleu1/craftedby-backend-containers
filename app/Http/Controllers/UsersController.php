@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,9 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::all();
+
+        //Authorize user(admin) with policy method
+        $this->authorize('viewAny', User::class);
 
         return response()->json([
             'message' => 'List of users',
@@ -37,7 +41,16 @@ class UsersController extends Controller
     {
         $validatedData = $request->validated();
 
+        //Create User
         $user = User::create($validatedData);
+
+        // Retrieve the regular_user role
+        $regularUserRole = Role::where('name', 'regular_user')->first();
+
+        // Check if the regular_user role exists and attach it to the user
+        if ($regularUserRole) {
+            $user->roles()->attach($regularUserRole->id);
+        }
 
         return response()->json([
             'message' => 'User successfully registered',
@@ -52,10 +65,8 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
 
-//        // Check if the authenticated user's ID matches the ID of the user being requested
-        if ($user->id!== auth()->user()->id) {
-            abort(403, 'Unauthorized action.');
-        }
+        //Authorize user with policy method
+        $this->authorize('view', $user);
 
         return response()->json([
             'message' => 'Selected user',
@@ -74,44 +85,13 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-//    public function update(Request $request, string $id)
-//    {
-//        $user = User::findOrFail($id);
-//
-//        // Check if the authenticated user's ID matches the ID of the user being updated
-//        if ($user->id!== auth()->user()->id) {
-//            abort(403, 'Unauthorized action.');
-//        }
-//
-//        $validatedData = $request->validate([
-//            'name' => 'required|string|max:255',
-//            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-//            'password' => 'nullable|string|min:8|confirmed',
-//        ]);
-//
-//        $user->name = $validatedData['name'];
-//        $user->email = $validatedData['email'];
-//
-//        if ($validatedData['password']) {
-//            $user->password = Hash::make($validatedData['password']);
-//        }
-//
-//        $user->save();
-//
-//        return response()->json([
-//            'message' => 'User updated successfully',
-//            'user' => $user,
-//        ]);
-//    }
-
     public function update(StoreUserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
 
-        // Check if the authenticated user's ID matches the ID of the user being updated
-        if ($user->id!== auth()->user()->id) {
-            abort(403, 'Unauthorized action.');
-        }
+        //Authorize user with policy method
+        $this->authorize('view', $user);
+
         $validatedData = $request->validated();
 
         // Check which fields have been provided in the request and update only those fields
@@ -142,7 +122,6 @@ class UsersController extends Controller
 
         $user->save();
 
-
         return response()->json([
             'message' => 'User updated successfully',
             'user' => $user,
@@ -155,11 +134,6 @@ class UsersController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
-
-        // Check if the authenticated user's ID matches the ID of the user being deleted
-        if ($user->id!== auth()->user()->id) {
-            abort(403, 'Unauthorized action.');
-        }
 
         $user->delete();
 
