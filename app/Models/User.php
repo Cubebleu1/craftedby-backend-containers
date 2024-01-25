@@ -69,4 +69,26 @@ class User extends Authenticatable
         return $this->hasOne(Business::class);
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    // Helper method to check if a user has a specific role
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    // Role-check methods
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isBusinessOwner()
+    {
+        return $this->hasRole('business_owner');
+    }
+
 }
