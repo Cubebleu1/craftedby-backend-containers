@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -65,7 +66,7 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
 
-        //Authorize user with policy method
+        // Authorize user to view if looking at own user data
         $this->authorize('view', $user);
 
         return response()->json([
@@ -85,12 +86,12 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUserRequest $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
 
         //Authorize user with policy method
-        $this->authorize('view', $user);
+        $this->authorize('update', $user);
 
         $validatedData = $request->validated();
 

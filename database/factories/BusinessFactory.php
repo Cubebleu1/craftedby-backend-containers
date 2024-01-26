@@ -29,7 +29,7 @@ class BusinessFactory extends Factory
             'city' => $faker->city,
             'email' => $faker->unique()->safeEmail,
             'phone_number' => $faker->phoneNumber,
-            'siret' => '1234567890',
+            'siret' => '12345678901234',
             'website' => $faker->domainName,
             'biography' => $faker->text(100),
             'history' => $faker->text(120),

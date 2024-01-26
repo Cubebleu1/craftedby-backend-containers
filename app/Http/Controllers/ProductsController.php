@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProductsController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): ResourceCollection
     {
         //Build a query for the Product model
         $query = Product::query();
@@ -49,9 +51,11 @@ class ProductsController extends Controller
                 $query->where('rating', '=', $rating);
             });
         }
-        //Execute query and get results
-        $products = $query->get();
-        return response()->json($products);
+        //Execute query (with eager loading) and get results
+        $products = $query->with('business', 'material', 'color')->get();
+
+        return ProductResource::collection($products);
+
     }
 
     public function show($id): JsonResponse

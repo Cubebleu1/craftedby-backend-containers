@@ -47,7 +47,7 @@ class UserPolicy
      */
     public function delete(User $currentUser, User $user)
     {
-        return $currentUser->isAdmin();
+        return $currentUser->id === $user->id || $currentUser->isAdmin();
     }
 
     /**
@@ -55,7 +55,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -63,6 +63,6 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        //
+        return $user->isAdmin();
     }
 }
