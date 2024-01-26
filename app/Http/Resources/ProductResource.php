@@ -27,11 +27,14 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'price' => $this->price,
             'stock' => $this->stock,
-            'business' => new BusinessResource($this->business),
             'material' => $this->material->name,
             'color' => $this->color->name,
             'customisable' => $this->customisable,
             'image_path' => $this->image_path,
+            'categories' => CategoryResource::collection($this->categories),
+            $this->mergeWhen($request->product, [
+                'business' => new BusinessResource($this->business),
+            ])
         ];
     }
 }

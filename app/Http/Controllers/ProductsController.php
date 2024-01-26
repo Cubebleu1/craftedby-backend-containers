@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ProductResource;
@@ -13,6 +14,9 @@ class ProductsController extends Controller
 {
     public function index(Request $request): ResourceCollection
     {
+        //Pass the product param to request
+        $request->merge(['product' => true]);
+
         //Build a query for the Product model
         $query = Product::query();
 
@@ -58,13 +62,14 @@ class ProductsController extends Controller
 
     }
 
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): ProductResource
     {
+        //Pass the product param to request
+        $request->merge(['product' => true]);
+
         $product = Product::find($id);
-        if (!$product) {
-            return response()->json(['message' => 'Product not found'], 404);
-        }
-        return response()->json($product);
+
+        return ProductResource::make($product);
     }
 
     public function store(StoreProductRequest $request): JsonResponse
@@ -75,17 +80,32 @@ class ProductsController extends Controller
         return response()->json($product, 201);
     }
 
-    public function update(StoreProductRequest $request, $id): JsonResponse
+    public function update(UpdateProductRequest $request, $id): JsonResponse
     {
         $product = Product::find($id);
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
+
         $validatedData = $request->validated();
 
-        $product->update($validatedData);
+        // Check which fields have been provided in the request and update only those fields
+        $product->name = $validatedData['name'] ?? $product->name;
+        $product->price = $validatedData['price'] ?? $product->price;
+        $product->stock = $validatedData['stock'] ?? $product->stock;
+        $product->material_id = $validatedData['material_id'] ?? $product->material_id;
+        $product->size = $validatedData['size'] ?? $product->size;
+        $product->weight = $validatedData['weight'] ?? $product->weight;
+        $product->color_id = $validatedData['color_id'] ?? $product->color_id;
+        $product->customisable = $validatedData['customisable'] ?? $product->customisable;
+        $product->image_path = $validatedData['image_path'] ?? $product->image_path;
+
+        // Save the updated product
+        $product->save();
+
         return response()->json($product);
     }
+
 
     public function destroy($id): JsonResponse
     {

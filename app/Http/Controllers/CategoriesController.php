@@ -2,28 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request) : ResourceCollection
     {
-        $categories = Category::all();
-        return response()->json($categories);
+        $query = Category::query();
+
+        // Search for products by name (partial word))
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            //LIKE operator for a partial match search
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $categories = $query->get();
+        return CategoryResource::collection($categories);
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+//    /**
+//     * Show the form for creating a new resource.
+//     */
+//    public function create()
+//    {
+//        //
+//    }
 
     /**
      * Store a newly created resource in storage.
@@ -52,13 +63,13 @@ class CategoriesController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+//    /**
+//     * Show the form for editing the specified resource.
+//     */
+//    public function edit(string $id)
+//    {
+//        //
+//    }
 
     /**
      * Update the specified resource in storage.

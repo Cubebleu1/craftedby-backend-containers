@@ -8,6 +8,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class OrderResource extends JsonResource
 {
     /**
+     * The "data" wrapper that should be applied.
+     *
+     * @var string|null
+     */
+    public static $wrap = 'order';
+
+    /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
@@ -20,6 +27,11 @@ class OrderResource extends JsonResource
             $this->mergeWhen($request->order, [
                 'total_without_tax' => $this->total_without_tax,
                 'tax_amount' => $this->tax_amount,
+                'total_tax_included' => $this->total_tax_included,
+                'payment_status' => $this->payment_status,
+
+                'user' => new UserResource($this->user),
             ])
-        ];        }
+        ];
+    }
 }

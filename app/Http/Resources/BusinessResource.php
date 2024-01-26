@@ -8,6 +8,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class BusinessResource extends JsonResource
 {
     /**
+     * The "data" wrapper that should be applied.
+     *
+     * @var string|null
+     */
+    public static $wrap = 'business';
+
+    /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
@@ -30,6 +37,7 @@ class BusinessResource extends JsonResource
                 'history' => $this->history,
                 'theme_id' => $this->theme_id,
                 'user_id' => $this->user_id,
+                'specialties' => SpecialtyResource::collection($this->specialties),
             ])
         ];
     }

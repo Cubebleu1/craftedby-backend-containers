@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
@@ -14,17 +16,17 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): ResourceCollection
     {
+        //Pass the user param to request
+        $request->merge(['user' => true]);
+
         $users = User::all();
 
         //Authorize user(admin) with policy method
         $this->authorize('viewAny', User::class);
 
-        return response()->json([
-            'message' => 'List of users',
-            'users' => $users,
-        ]);
+        return UserResource::collection($users);
     }
 
 //    /**
@@ -40,6 +42,9 @@ class UsersController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        //Pass the user param to request
+        $request->merge(['user' => true]);
+
         $validatedData = $request->validated();
 
         //Create User
@@ -62,17 +67,17 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id): UserResource
     {
+        //Pass the product param to request
+        $request->merge(['user' => true]);
+
         $user = User::findOrFail($id);
 
         // Authorize user to view if looking at own user data
         $this->authorize('view', $user);
 
-        return response()->json([
-            'message' => 'Selected user',
-            'user' => $user,
-        ]);
+        return new UserResource($user);
     }
 
 //    /**
