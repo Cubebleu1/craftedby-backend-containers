@@ -56,7 +56,7 @@ class ProductsController extends Controller
             });
         }
         //Execute query (with eager loading) and get results
-        $products = $query->with('business', 'material', 'color')->get();
+        $products = $query->with('business', 'material', 'color', 'reviews')->get();
 
         return ProductResource::collection($products);
 
@@ -89,7 +89,7 @@ class ProductsController extends Controller
 
         $validatedData = $request->validated();
 
-        // Check which fields have been provided in the request and update only those fields
+        // Check which fields have been pprovided in the request and update only those fields
         $product->name = $validatedData['name'] ?? $product->name;
         $product->price = $validatedData['price'] ?? $product->price;
         $product->stock = $validatedData['stock'] ?? $product->stock;

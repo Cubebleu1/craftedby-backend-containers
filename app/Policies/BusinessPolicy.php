@@ -2,28 +2,26 @@
 
 namespace App\Policies;
 
+use App\Models\Business;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-
-class UserPolicy
+class BusinessPolicy
 {
-    use HandlesAuthorization;
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $currentUser): bool
+    public function viewAny(User $user): bool
     {
-        return $currentUser->isAdmin();
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $currentUser, User $user)
+    public function view(User $user, Business $business): bool
     {
-        return $currentUser->id === $user->id || $currentUser->isAdmin();
+        return true;
     }
 
     /**
@@ -31,29 +29,31 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user -> isRegularUser();
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $currentUser, User $user)
+    public function update(User $user, Business $business): bool
     {
-        return $currentUser->id === $user->id || $currentUser->isAdmin();
+        // Allow if the user is the owner of the business or an admin
+        return $user->id === $business->user_id || $user->isAdmin();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $currentUser, User $user)
+    public function delete(User $user, Business $business): bool
     {
-        return $currentUser->id === $user->id || $currentUser->isAdmin();
+        // Allow if the user is the owner of the business or an admin
+        return $user->id === $business->user_id || $user->isAdmin();
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Business $business): bool
     {
         return $user->isAdmin();
     }
@@ -61,7 +61,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Business $business): bool
     {
         return $user->isAdmin();
     }

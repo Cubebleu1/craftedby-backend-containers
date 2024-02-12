@@ -14,6 +14,9 @@ class CategoriesController extends Controller
      */
     public function index(Request $request) : ResourceCollection
     {
+        //Pass the category param to request
+        $request->merge(['category' => true]);
+
         $query = Category::query();
 
         // Search for products by name (partial word))
@@ -41,6 +44,11 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        // Check if the user is authorized to create a category
+        if (!auth()->user()->hasRole('business_owner')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -76,6 +84,11 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Check if the user is authorized to update a category
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $category = Category::find($id);
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
@@ -95,6 +108,11 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
+        // Check if the user is authorized to update a category
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $category = Category::find($id);
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);

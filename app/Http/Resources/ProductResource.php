@@ -34,6 +34,7 @@ class ProductResource extends JsonResource
             'categories' => CategoryResource::collection($this->categories),
             $this->mergeWhen($request->product, [
                 'business' => new BusinessResource($this->business),
+                'review' => ReviewResource::collection($this->reviews),
             ])
         ];
     }

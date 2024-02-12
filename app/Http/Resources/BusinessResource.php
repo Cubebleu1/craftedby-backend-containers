@@ -21,6 +21,7 @@ class BusinessResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = $this->user;
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -30,6 +31,7 @@ class BusinessResource extends JsonResource
             $this->mergeWhen($request->business, [
                 'address' => $this->address,
                 'postal_code' => $this->postal_code,
+                'country' => $this->country,
                 'city' => $this->city,
                 'siret' => $this->siret,
                 'craft_id' => $this->craft_id,
@@ -37,6 +39,7 @@ class BusinessResource extends JsonResource
                 'history' => $this->history,
                 'theme_id' => $this->theme_id,
                 'user_id' => $this->user_id,
+                'business_owner' => new UserResource($user),
                 'specialties' => SpecialtyResource::collection($this->specialties),
             ])
         ];

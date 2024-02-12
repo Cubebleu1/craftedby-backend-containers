@@ -34,7 +34,7 @@ Route::delete('/users/{id}', [UsersController::class, 'destroy'])->middleware('a
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-//Posts routes
+//Products routes
 Route::get('/products', [ProductsController::class, 'index']);
 Route::get('/products/{id}', [ProductsController::class, 'show']);
 Route::post('/products', [ProductsController::class, 'store'])->middleware('auth:sanctum');

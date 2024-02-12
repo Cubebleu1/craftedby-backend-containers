@@ -27,6 +27,7 @@ class BusinessFactory extends Factory
             'address' => $faker->streetAddress,
             'postal_code' => $faker->postcode,
             'city' => $faker->city,
+            'country' => 'France',
             'email' => $faker->unique()->safeEmail,
             'phone_number' => $faker->phoneNumber,
             'siret' => '12345678901234',

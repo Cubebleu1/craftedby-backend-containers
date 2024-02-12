@@ -18,13 +18,13 @@ class UsersController extends Controller
      */
     public function index(Request $request): ResourceCollection
     {
+        //Authorize user(admin) with policy method
+        $this->authorize('viewAny', User::class);
+
         //Pass the user param to request
         $request->merge(['user' => true]);
 
         $users = User::all();
-
-        //Authorize user(admin) with policy method
-        $this->authorize('viewAny', User::class);
 
         return UserResource::collection($users);
     }
@@ -140,6 +140,9 @@ class UsersController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
+
+        //Authorize user with policy method
+        $this->authorize('delete', $user);
 
         $user->delete();
 

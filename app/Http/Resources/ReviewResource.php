@@ -5,14 +5,14 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class ReviewResource extends JsonResource
 {
     /**
      * The "data" wrapper that should be applied.
      *
      * @var string|null
      */
-    public static $wrap = 'user';
+    public static $wrap = 'review';
 
     /**
      * Transform the resource into an array.
@@ -23,14 +23,11 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            $this->mergeWhen($request->user, [
-                'address' => $this->address,
-                'postal_code' => $this->postal_code,
-                'city' => $this->city,
-                'email' => $this->email,
-                'phone_number' => $this->phone_number,
+            'rating' => $this->rating,
+            'comment' => $this->comment,
+            'created_at' => $this->created_at,
+            $this->mergeWhen($request->review, [
+                'reviewer' => new UserResource($this->user),
             ]),
         ];
     }

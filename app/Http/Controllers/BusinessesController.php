@@ -6,6 +6,8 @@ use App\Http\Requests\StoreBusinessRequest;
 use App\Http\Requests\UpdateBusinessRequest;
 use App\Http\Resources\BusinessResource;
 use App\Models\Business;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -43,25 +45,41 @@ class BusinessesController extends Controller
     public function show(Request $request, $id) : BusinessResource
     {
         $request->merge(['business' => true]);
-        $business = Business::find($id);
+
+        $business = Business::findOrFail($id);
         return new BusinessResource($business);
 
     }
 
     public function store(StoreBusinessRequest $request)
     {
+        $this->authorize('create', Business::class);
+
         $validatedData = $request->validated();
+        // Add current user id
+        $validatedData['user_id'] = auth()->user()->id;
 
         $business = Business::create($validatedData);
+
+        // Add business_owner role to user
+        $user = User::findOrFail($validatedData['user_id']);
+        // Retrieve the regular_user role
+        $regularUserRole = Role::where('name', 'business_owner')->first();
+        // Check if the regular_user role exists and attach it to the user
+        if ($regularUserRole) {
+            $user->roles()->attach($regularUserRole->id);
+        }
+
         return response()->json($business, 201);
     }
 
     public function update(UpdateBusinessRequest $request, $id)
     {
-        $business = Business::find($id);
-        if (!$business) {
-            return response()->json(['message' => 'Business not found'], 404);
-        }
+        $business = Business::findorFail($id);
+        // Get user via user_id in businesses table
+        $user = User::findOrFail($business->user_id);
+        // Authorize user to update if it's the business owner
+        $this->authorize('update', $user);
 
         $validatedData = $request->validated();
 
@@ -71,11 +89,15 @@ class BusinessesController extends Controller
 
     public function destroy($id)
     {
-        $business = Business::find($id);
+        $business = Business::findorFail($id);
+        // Get user via user_id in businesses table
+        $user = User::findOrFail($business->user_id);
+        // Authorize user to update if it's the business owner
+        $this->authorize('delete', $user);
+
         if (!$business) {
             return response()->json(['message' => 'Business not found'], 404);
         }
-
         $business->delete();
         return response()->json(['message' => 'Business deleted successfully']);
     }

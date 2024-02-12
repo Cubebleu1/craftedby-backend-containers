@@ -24,14 +24,13 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'order_number' => $this->order_number,
-            $this->mergeWhen($request->order, [
-                'total_without_tax' => $this->total_without_tax,
-                'tax_amount' => $this->tax_amount,
-                'total_tax_included' => $this->total_tax_included,
-                'payment_status' => $this->payment_status,
-
-                'user' => new UserResource($this->user),
-            ])
+            'total_without_tax' => $this->total_without_tax,
+            'tax_amount' => $this->tax_amount,
+            'total_tax_included' => $this->total_tax_included,
+            'payment_status' => $this->payment_status,
+                $this->mergeWhen($request->user()->isAdmin(), [
+                    'user' => new UserResource($this->user),
+                ])
         ];
     }
 }

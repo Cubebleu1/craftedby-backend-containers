@@ -21,5 +21,13 @@ class AdminSeeder extends Seeder
         User::factory()->admin()->create()->each(function ($user) use ($adminRole) {
             $user->roles()->attach($adminRole);
         });
+
+        // Retrieve the regular_user role
+        $regularUser = Role::where('name', 'regular_user')->first();
+
+        // Create a regular user using the 'regularUser' state/method and attach the 'regular_user' role
+        User::factory()->regularUser()->create()->each(function ($user) use ($regularUser) {
+            $user->roles()->attach($regularUser);
+        });
     }
 }

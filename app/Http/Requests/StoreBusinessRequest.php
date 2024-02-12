@@ -23,26 +23,23 @@ class StoreBusinessRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|uuid',
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'postal_code' => 'required|string|max:10',
             'city' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone_number' => 'required|string|max:20',
             'siret' => 'required|numeric|digits:14',
-            'craft_id' => 'required|uuid',
-            'website' => 'nullable|url|max:255',
+//            'craft_id' => 'required|uuid',
+            'website' => 'nullable|string|max:255',
             'biography' => 'nullable|string',
             'history' => 'nullable|string',
-            'theme_id' => 'required|uuid',
         ];
     }
     public function messages(): array
     {
         return [
-            'user_id.required' => 'The user ID field is required.',
-            'user_id.uuid' => 'The user ID must be a valid UUID.',
             'name.required' => 'The name field is required.',
             'name.string' => 'The name must be a string of characters.',
             'name.max' => 'The name may not be greater than 255 characters.',
@@ -55,6 +52,8 @@ class StoreBusinessRequest extends FormRequest
             'city.required' => 'The city field is required.',
             'city.string' => 'The city must be a string of characters.',
             'city.max' => 'The city may not be greater than 255 characters.',
+            'country.string' => 'The country must be a string of characters.',
+            'country.max' => 'The country may not be greater than 255 characters.',
             'email.required' => 'The email field is required.',
             'email.email' => 'The email must be a valid email address.',
             'email.max' => 'The email may not be greater than 255 characters.',
@@ -70,8 +69,6 @@ class StoreBusinessRequest extends FormRequest
             'website.max' => 'The website may not be greater than 255 characters.',
             'biography.string' => 'The biography must be a string of characters.',
             'history.string' => 'The history must be a string of characters.',
-            'theme_id.required' => 'The theme ID field is required.',
-            'theme_id.uuid' => 'The theme ID must be a valid UUID.',
         ];
     }
 

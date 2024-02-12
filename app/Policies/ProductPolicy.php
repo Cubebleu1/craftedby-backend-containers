@@ -13,7 +13,7 @@ class ProductPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,6 +29,7 @@ class ProductPolicy
      */
     public function create(User $user): bool
     {
+        //Allow to create a product if user is a business owner
         return $user->isBusinessOwner();
     }
 
@@ -46,7 +47,8 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        //
+        // Allow delete if the user is the owner of the product or an admin
+        return $user->id === $product->user_id || $user->isAdmin();
     }
 
     /**
@@ -54,7 +56,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -62,6 +64,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        //
+        return $user->isAdmin();
     }
 }

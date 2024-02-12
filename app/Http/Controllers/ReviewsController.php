@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReviewResource;
 use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ReviewsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
-    {
+    public function index(Request $request): ResourceCollection
+        {
+        //Pass the review param to request
+        $request->merge(['review' => true]);
+
         $query = Review::query();
 
         //Search for (partial word) in comment
@@ -29,8 +34,9 @@ class ReviewsController extends Controller
         }
 
         //Execute query and get results
-        $reviews = $query->get();
-        return response()->json($reviews);
+        $reviews = $query->with('product', 'user')->get();
+        return ReviewResource::collection($reviews);
+
     }
 
     /**
@@ -60,8 +66,11 @@ class ReviewsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        //Pass the review param to request
+        $request->merge(['review' => true]);
+
         $review = Review::find($id);
         if (!$review) {
             return response()->json(['message' => 'Review not found'], 404);

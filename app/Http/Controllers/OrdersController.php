@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -15,6 +16,11 @@ class OrdersController extends Controller
      */
     public function index(Request $request) : ResourceCollection
     {
+        //Authorize user(admin) with policy method
+        $this->authorize('viewAny', User::class);
+
+        //order table has order_product pivot table, that has product_id. product table has business_id. business table has user_id field. i want to make an orders policy where only admin or the user that has the business that is linked to the product that is linked to the order to be able to be authorized to show/update/delete
+
         //Pass the order param to request
         $request->merge(['order' => true]);
 

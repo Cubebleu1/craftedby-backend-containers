@@ -91,4 +91,9 @@ class User extends Authenticatable
         return $this->hasRole('business_owner');
     }
 
+    public function isRegularUser()
+    {
+        return $this->hasRole('regular_user');
+    }
+
 }
