@@ -55,6 +55,17 @@ class ProductsController extends Controller
                 $query->where('rating', '=', $rating);
             });
         }
+        // Filter by minimum price
+        if ($request->has('minPrice')) {
+            $minPrice = $request->input('minPrice');
+            $query->where('price', '>=', $minPrice);
+        }
+
+        // Filter by maximum price
+        if ($request->has('maxPrice')) {
+            $maxPrice = $request->input('maxPrice');
+            $query->where('price', '<=', $maxPrice);
+        }
         //Execute query (with eager loading) and get results
         $products = $query->with('business', 'material', 'color', 'reviews')->get();
 
