@@ -56,16 +56,17 @@ class ProductsController extends Controller
             });
         }
         // Filter by minimum price
-        if ($request->has('minPrice')) {
-            $minPrice = $request->input('minPrice');
+        if ($request->has('priceRange.min')) {
+            $minPrice = $request->input('priceRange.min');
             $query->where('price', '>=', $minPrice);
         }
 
         // Filter by maximum price
-        if ($request->has('maxPrice')) {
-            $maxPrice = $request->input('maxPrice');
+        if ($request->has('priceRange.max')) {
+            $maxPrice = $request->input('priceRange.max');
             $query->where('price', '<=', $maxPrice);
         }
+
         //Execute query (with eager loading) and get results
         $products = $query->with('business', 'material', 'color', 'reviews')->get();
 
