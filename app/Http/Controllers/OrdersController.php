@@ -50,10 +50,26 @@ class OrdersController extends Controller
     public function store(StoreOrderRequest $request)
     {
         $validatedData = $request->validated();
+        $validatedData['order_number'] = $this->generateOrderNumber();
         $order = Order::create($validatedData);
 
         return response()->json(['message' => 'Order created successfully', 'order' => $order], 201);
     }
+
+    protected function generateOrderNumber()
+    {
+        $dateSegment = now()->format('Ymd');
+        $lastOrderNumber = Order::where('order_number', 'LIKE', $dateSegment . '%')->max('order_number');
+
+        if ($lastOrderNumber) {
+            $counter = intval(substr($lastOrderNumber, -4)) + 1; // Increment the last 4 digits
+        } else {
+            $counter = 1;
+        }
+        // Ensure the counter is at least 4 digits
+        return $dateSegment . sprintf('%04d', $counter);
+    }
+
 
     /**
      * Display the specified order.

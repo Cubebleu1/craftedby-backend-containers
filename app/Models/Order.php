@@ -12,6 +12,17 @@ class Order extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $table = 'orders';
+    protected $fillable = [
+        'id',
+        'order_number',
+        'user_id',
+        'total_without_tax',
+        'tax_amount',
+        'total_tax_included',
+        'payment_status',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

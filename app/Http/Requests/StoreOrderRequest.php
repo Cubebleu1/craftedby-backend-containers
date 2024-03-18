@@ -21,7 +21,7 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_number' => 'required|numeric',
+//            'order_number' => 'required|numeric',
             'user_id' => 'required|uuid',
             'total_without_tax' => 'required|numeric|min:0',
             'tax_amount' => 'required|numeric|min:0',
