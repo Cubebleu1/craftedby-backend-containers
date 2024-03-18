@@ -64,6 +64,29 @@ class UsersController extends Controller
         ], 201);
     }
 
+    public function yolo(StoreUserRequest $request)
+    {
+        //Pass the user param to request
+        $request->merge(['user' => true]);
+
+        $validatedData = $request->validated();
+
+        //Create User
+        $user = User::create($validatedData);
+
+        // Retrieve the regular_user role
+        $regularUserRole = Role::where('name', 'regular_user')->first();
+
+        // Check if the regular_user role exists and attach it to the user
+        if ($regularUserRole) {
+            $user->roles()->attach($regularUserRole->id);
+        }
+
+        return response()->json([
+            'message' => 'yolo',
+        ], 201);
+    }
+
     /**
      * Display the specified resource.
      */

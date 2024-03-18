@@ -25,10 +25,12 @@ use Illuminate\Support\Facades\Route;
 
 //Users routes
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/users', [UsersController::class, 'store']);
+//Register user
 Route::get('/users/{id}', [UsersController::class, 'show'])->middleware('auth:sanctum');
-Route::put('/users/{id}', [UsersController::class, 'update'])->middleware('auth:sanctum');
+Route::patch('/users/{id}', [UsersController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('/users/{id}', [UsersController::class, 'destroy'])->middleware('auth:sanctum');
+Route::post('/users', [UsersController::class, 'store']);
+
 
 //Login and logout functionality
 Route::post('login', [AuthController::class, 'login']);
