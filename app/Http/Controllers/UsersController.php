@@ -14,7 +14,15 @@ use Illuminate\Support\Facades\Hash;
 class UsersController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     *  Display a list of users (needs admin rights).
+     * @OA\Get(
+     *     path="/users",
+     *     summary="Get a list of users",
+     *     tags={"Users"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Invalid request")
+     * )
      */
     public function index(Request $request): ResourceCollection
     {
@@ -28,14 +36,6 @@ class UsersController extends Controller
 
         return UserResource::collection($users);
     }
-
-//    /**
-//     * Show the form for creating a new resource.
-//     */
-//    public function create()
-//    {
-//        //
-//    }
 
     /**
      * Store a newly created resource in storage.
@@ -64,29 +64,6 @@ class UsersController extends Controller
         ], 201);
     }
 
-    public function yolo(StoreUserRequest $request)
-    {
-        //Pass the user param to request
-        $request->merge(['user' => true]);
-
-        $validatedData = $request->validated();
-
-        //Create User
-        $user = User::create($validatedData);
-
-        // Retrieve the regular_user role
-        $regularUserRole = Role::where('name', 'regular_user')->first();
-
-        // Check if the regular_user role exists and attach it to the user
-        if ($regularUserRole) {
-            $user->roles()->attach($regularUserRole->id);
-        }
-
-        return response()->json([
-            'message' => 'yolo',
-        ], 201);
-    }
-
     /**
      * Display the specified resource.
      */
@@ -102,14 +79,6 @@ class UsersController extends Controller
 
         return new UserResource($user);
     }
-
-//    /**
-//     * Show the form for editing the specified resource.
-//     */
-//    public function edit(string $id)
-//    {
-//        //
-//    }
 
     /**
      * Update the specified resource in storage.

@@ -12,6 +12,66 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProductsController extends Controller
 {
+    /**
+     * Display a list of products, with optional filters
+     * @OA\Get(
+     *     path="/products",
+     *     summary="Get a list of (filtered) products",
+     *     tags={"Products"},
+     *          @OA\Parameter(
+     *          name="search",
+     *          in="query",
+     *          description="Search by (partial) name",
+     *          required=false,
+     *          @OA\Schema(type="string")
+     *      ),
+     *           @OA\Parameter(
+     *           name="color",
+     *           in="query",
+     *           description="Add color filter (e.g. blue, red, yellow)",
+     *           required=false,
+     *           @OA\Schema(type="string")
+     *       ),
+     *            @OA\Parameter(
+     *            name="category",
+     *            in="query",
+     *            description="Add category filter (e.g. nourriture, meubles, jouets)",
+     *            required=false,
+     *            @OA\Schema(type="string")
+     *        ),
+     *          @OA\Parameter(
+     *          name="material",
+     *          in="query",
+     *          required=false,
+     *          description="Filter by product material (e.g. céramique, plâtre, bois)",
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Parameter(
+     *          name="rating",
+     *          in="query",
+     *          required=false,
+     *          description="Filter by product rating (e.g. 1, 2, 5)",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Parameter(
+     *          name="priceRange.min",
+     *          in="query",
+     *          required=false,
+     *          description="Minimum price range for products",
+     *          @OA\Schema(type="number", format="decimal")
+     *      ),
+     *      @OA\Parameter(
+     *          name="priceRange.max",
+     *          in="query",
+     *          required=false,
+     *          description="Maximum price range for products",
+     *          @OA\Schema(type="number", format="decimal")
+     *      ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Invalid request"),
+     *     @OA\Response(response=404, description="Product(s) not found")
+     * )
+     */
     public function index(Request $request): ResourceCollection
     {
         //Pass the product param to request
@@ -74,6 +134,24 @@ class ProductsController extends Controller
 
     }
 
+    /**
+     * Display a product by id.
+     * @OA\Get(
+     *     path="/products/{id}",
+     *     summary="Display a specific product",
+     *     tags={"Products"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Product ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Invalid request"),
+     *     @OA\Response(response=404, description="Product(s) not found")
+     * )
+     */
     public function show(Request $request, $id): ProductResource
     {
         //Pass the product param to request
@@ -84,6 +162,35 @@ class ProductsController extends Controller
         return ProductResource::make($product);
     }
 
+    /**
+     * Store a newly created product in storage.
+     *
+     * @OA\Post(
+     *     path="/products",
+     *     summary="Create a new product",
+     *     tags={"Products"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/Product")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Product created successfully",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/Product")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Unexpected error",
+     *     )
+     * )
+     */
     public function store(StoreProductRequest $request): JsonResponse
     {
         $validatedData = $request->validated();
@@ -92,6 +199,29 @@ class ProductsController extends Controller
         return response()->json($product, 201);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @OA\Put(
+     *     path="/products/{id}",
+     *     summary="Update a product",
+     *     tags={"Products"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Product ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *     ),
+     *     @OA\Response(response=200, description="Product updated successfully"),
+     *     @OA\Response(response=404, description="Product not found")
+     * )
+     */
     public function update(UpdateProductRequest $request, $id): JsonResponse
     {
         $product = Product::find($id);
@@ -101,7 +231,7 @@ class ProductsController extends Controller
 
         $validatedData = $request->validated();
 
-        // Check which fields have been pprovided in the request and update only those fields
+        // Check which fields have been provided in the request else default to existing value
         $product->name = $validatedData['name'] ?? $product->name;
         $product->price = $validatedData['price'] ?? $product->price;
         $product->stock = $validatedData['stock'] ?? $product->stock;
@@ -118,7 +248,25 @@ class ProductsController extends Controller
         return response()->json($product);
     }
 
-
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @OA\Delete(
+     *     path="/products/{id}",
+     *     summary="Delete a product",
+     *     tags={"Products"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Product ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Product deleted successfully"),
+     *     @OA\Response(response=404, description="Product not found")
+     * )
+     */
     public function destroy($id): JsonResponse
     {
         $product = Product::find($id);

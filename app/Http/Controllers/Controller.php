@@ -8,6 +8,11 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(title="CraftedBy API", version="1.0")
+ * @OA\SecurityScheme(
+ *       securityScheme="sanctum",
+ *       type="http",
+ *       scheme="sanctum"
+ *  )
  */
 class Controller extends BaseController
 {

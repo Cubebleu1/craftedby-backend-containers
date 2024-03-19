@@ -16,6 +16,7 @@
                     "Products"
                 ],
                 "summary": "Get a list of (filtered) products",
+                "description": "Display a list of products, with optional filters",
                 "operationId": "e8dee54b09adbe3622e56a4f4f19ecb0",
                 "parameters": [
                     {
@@ -95,6 +96,44 @@
                         "description": "Product(s) not found"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create a new product",
+                "description": "Store a newly created product in storage.",
+                "operationId": "5d7ee765feb2052f10363a3d121ebd5e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/products/{id}": {
@@ -103,7 +142,7 @@
                     "Products"
                 ],
                 "summary": "Display a specific product",
-                "description": "Display the specified resource.",
+                "description": "Display a product by id.",
                 "operationId": "b2dc537014e0b7a417594278d020f99d",
                 "parameters": [
                     {
@@ -121,12 +160,86 @@
                         "description": "Successful operation"
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Invalid request"
                     },
                     "404": {
                         "description": "Product(s) not found"
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update a product",
+                "description": "Update the specified resource in storage.",
+                "operationId": "1b73c420e0cf9fb1cb88dcf445b9428b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully"
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete a product",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "4618152b49c17cc0c19dfed9ba73aa46",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product deleted successfully"
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/users": {
@@ -135,7 +248,7 @@
                     "Users"
                 ],
                 "summary": "Get a list of users",
-                "description": "Display a listing of the resource.",
+                "description": "Display a list of users (needs admin rights).",
                 "operationId": "5a61fd217e7500976e1ae5c5662a4903",
                 "responses": {
                     "200": {
@@ -144,7 +257,69 @@
                     "400": {
                         "description": "Invalid request"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Product": {
+                "properties": {
+                    "business_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "stock": {
+                        "type": "integer"
+                    },
+                    "material_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "size": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "weight": {
+                        "type": "number"
+                    },
+                    "color_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "customisable": {
+                        "type": "boolean"
+                    },
+                    "image_path": {
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "0": "API key login",
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     }
