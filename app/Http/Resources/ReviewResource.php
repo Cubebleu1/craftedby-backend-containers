@@ -25,6 +25,7 @@ class ReviewResource extends JsonResource
             'id' => $this->id,
             'rating' => $this->rating,
             'comment' => $this->comment,
+            'product_id' => $this->product_id,
             'created_at' => $this->created_at,
             $this->mergeWhen($request->review, [
                 'reviewer' => new UserResource($this->user),
