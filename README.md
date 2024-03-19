@@ -72,6 +72,14 @@ DB_PASSWORD=your_database_password
 php artisan migrate
 ```
 
+Optional:
+
+Seed database with all existing entities to populate catalogue:
+```
+php artisan db:seed --class=DatabaseSeeder  
+```
+
+
 8. Start the development server:
 
 ```
@@ -85,6 +93,14 @@ You should now be able to access the API on `localhost`. See the API list for po
 ## API routes
 
 This documentation provides information on the API routes and endpoints available in the application.
+
+### OpenAPI documentation of routes
+
+Launch backend server and visit:
+
+http://localhost:8000/api/documentation
+
+for a list of all routes (Swagger)
 
 ## Routes
 
