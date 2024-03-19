@@ -32,6 +32,9 @@ class UserResource extends JsonResource
                 'email' => $this->email,
                 'phone_number' => $this->phone_number,
             ]),
+                $this->mergeWhen($request->single_user, [
+                'reviews' => ReviewResource::collection($this->reviews),
+                ]),
         ];
     }
 }

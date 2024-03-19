@@ -55,7 +55,8 @@ class ReviewsController extends Controller
         $validatedData = $request->validate([
             'rating' => 'required|integer|between:1,5',
             'comment' => 'nullable|string|max:1000',
-            'customer_id' => 'required|uuid',
+            'user_id' => 'required|uuid',
+            'product_id' => 'required|uuid',
             ]);
 
         $review = Review::create($validatedData);

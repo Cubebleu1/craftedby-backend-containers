@@ -71,6 +71,7 @@ class UsersController extends Controller
     {
         //Pass the product param to request
         $request->merge(['user' => true]);
+        $request->merge(['single_user' => true]);
 
         $user = User::findOrFail($id);
 
