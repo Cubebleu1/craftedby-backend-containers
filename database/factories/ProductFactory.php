@@ -26,6 +26,7 @@ class ProductFactory extends Factory
         $imagePath = str_replace('public/', '', $imageFullPath);
         return [
             'name' => $faker->word,
+            'description' => $faker->sentence,
             'price' => $faker->numberBetween(10, 450),
             'stock' => $faker->numberBetween(1, 25),
             'size' => $faker->randomElement(['S', 'M', 'L']),

@@ -25,10 +25,12 @@ class StoreProductRequest extends FormRequest
         return [
             'business_id' => 'required|uuid',
             'name' => 'required|string|max:255',
+            'description' => 'sometimes|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'material_id' => 'required|uuid',
             'size' => 'required|string|max:100',
+            'weight' => 'required|numeric',
             'color_id' => 'required|uuid',
             'customisable' => 'required|boolean',
             'image_path' => 'nullable|string|max:255'
@@ -52,6 +54,8 @@ class StoreProductRequest extends FormRequest
             'size.required' => 'The size field is required.',
             'size.string' => 'The size must be a string of characters.',
             'size.max' => 'The size may not be greater than 100 characters.',
+            'weight.required' => 'The weight field is required.',
+            'weight.numeric' => 'The weight must be a number.',
             'color_id.required' => 'The color ID field is required.',
             'color_id.uuid' => 'The color ID must be a valid UUID.',
             'customisable.required' => 'The customisable field is required.',

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class UpdateProductRequest extends FormRequest
 {
     /**
@@ -25,10 +26,12 @@ class UpdateProductRequest extends FormRequest
         return [
             'business_id' => 'sometimes|uuid',
             'name' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string',
             'price' => 'sometimes|numeric',
             'stock' => 'sometimes|integer',
             'material_id' => 'sometimes|uuid',
             'size' => 'sometimes|string|max:100',
+            'weight' => 'sometimes|numeric',
             'color_id' => 'sometimes|uuid',
             'customisable' => 'sometimes|boolean',
             'image_path' => 'nullable|string|max:255'

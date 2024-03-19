@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ColorSeeder::class);
         $this->call(MaterialSeeder::class);
         //Create X products
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 25; $i++) {
             $this->call(ProductSeeder::class);
         //Create X orders for random products (and associated users)
         }

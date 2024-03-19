@@ -9,7 +9,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-
+/**
+ * @OA\Schema(schema="Product",
+ *     @OA\Property(property="business_id", type="string", format="uuid"),
+ *     @OA\Property(property="name", type="string", maxLength=255),
+ *     @OA\Property(property="description", type="string"),
+ *     @OA\Property(property="price", type="number"),
+ *     @OA\Property(property="stock", type="integer"),
+ *     @OA\Property(property="material_id", type="string", format="uuid"),
+ *     @OA\Property(property="size", type="string", maxLength=100),
+ *     @OA\Property(property="weight", type="number"),
+ *     @OA\Property(property="color_id", type="string", format="uuid"),
+ *     @OA\Property(property="customisable", type="boolean"),
+ *     @OA\Property(property="image_path", type="string", maxLength=255)
+ * )
+ */
 class Product extends Model
 {
     use HasFactory, HasUuids;
@@ -18,10 +32,12 @@ class Product extends Model
     protected $fillable = [
         'business_id',
         'name',
+        'description',
         'price',
         'stock',
         'material_id',
         'size',
+        'weight',
         'color_id',
         'customisable',
         'image_path',

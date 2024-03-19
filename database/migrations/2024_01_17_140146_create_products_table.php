@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('business_id');
             $table->string('name');
+            $table->string('description');
             $table->decimal('price');
             $table->integer('stock');
             $table->foreignUuid('material_id')->nullable();
