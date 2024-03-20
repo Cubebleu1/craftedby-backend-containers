@@ -11,6 +11,21 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     required={"first_name", "last_name", "email", "password"},
+ *     @OA\Property(property="first_name", type="string", maxLength=255),
+ *     @OA\Property(property="last_name", type="string", maxLength=255),
+ *     @OA\Property(property="email", type="string", format="email"),
+ *     @OA\Property(property="password", type="string", format="password"),
+ *     @OA\Property(property="address", type="string", nullable=true),
+ *     @OA\Property(property="postal_code", type="string", nullable=true),
+ *     @OA\Property(property="city", type="string", nullable=true),
+ *     @OA\Property(property="phone_number", type="string", nullable=true),
+ *     @OA\Property(property="roles", type="array", @OA\Items(type="string"))
+ * )
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuids;

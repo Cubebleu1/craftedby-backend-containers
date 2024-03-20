@@ -15,6 +15,7 @@ class UsersController extends Controller
 {
     /**
      *  Display a list of users (needs admin rights).
+     *
      * @OA\Get(
      *     path="/users",
      *     summary="Get a list of users",
@@ -38,7 +39,33 @@ class UsersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  Store a newly created resource in storage.
+     *
+     * @OA\Post(
+     *     path="/users",
+     *     summary="Register a new user",
+     *     tags={"Users"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/User")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User registered successfully",
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/User")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Unexpected error",
+     *     )
+     * )
      */
     public function store(StoreUserRequest $request)
     {
@@ -65,7 +92,24 @@ class UsersController extends Controller
     }
 
     /**
+     *
      * Display the specified resource.
+     *
+     * @OA\Get(
+     *     path="/users/{id}",
+     *     summary="Display a specific user",
+     *     tags={"Users"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="User ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation", @OA\JsonContent(ref="#/components/schemas/User")),
+     *     @OA\Response(response=404, description="User not found")
+     * )
      */
     public function show(Request $request, string $id): UserResource
     {
@@ -83,6 +127,26 @@ class UsersController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @OA\Put(
+     *     path="/users/{id}",
+     *     summary="Update an existing user",
+     *     tags={"Users"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="User ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(response=200, description="User updated successfully"),
+     *     @OA\Response(response=404, description="User not found")
+     * )
      */
     public function update(UpdateUserRequest $request, string $id)
     {
@@ -129,6 +193,22 @@ class UsersController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @OA\Delete(
+     *     path="/users/{id}",
+     *     summary="Delete a user",
+     *     tags={"Users"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="User ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="User deleted successfully"),
+     *     @OA\Response(response=404, description="User not found")
+     * )
      */
     public function destroy(string $id)
     {

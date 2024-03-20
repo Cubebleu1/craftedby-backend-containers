@@ -12,14 +12,33 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class OrdersController extends Controller
 {
     /**
-     * Display a listing of the orders.
+     * @OA\Get(
+     *     path="/orders",
+     *     summary="List all orders",
+     *     tags={"Orders"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Search term for orders",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Order"))
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
      */
     public function index(Request $request) : ResourceCollection
     {
         //Authorize user(admin) with policy method
         $this->authorize('viewAny', User::class);
-
-        //order table has order_product pivot table, that has product_id. product table has business_id. business table has user_id field. i want to make an orders policy where only admin or the user that has the business that is linked to the product that is linked to the order to be able to be authorized to show/update/delete
 
         //Pass the order param to request
         $request->merge(['order' => true]);
@@ -45,7 +64,25 @@ class OrdersController extends Controller
     }
 
     /**
-     * Store a newly created order in storage.
+     * @OA\Post(
+     *     path="/orders",
+     *     summary="Create a new order",
+     *     tags={"Orders"},
+     *     security={{"sanctum": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Order")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Order created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Order")
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
      */
     public function store(StoreOrderRequest $request)
     {
@@ -70,9 +107,29 @@ class OrdersController extends Controller
         return $dateSegment . sprintf('%04d', $counter);
     }
 
-
     /**
-     * Display the specified order.
+     * @OA\Get(
+     *     path="/orders/{id}",
+     *     summary="Display a specific order",
+     *     tags={"Orders"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Order ID",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Order")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Order not found"
+     *     )
+     * )
      */
     public function show(Request $request, $id)
     {
@@ -89,7 +146,32 @@ class OrdersController extends Controller
     }
 
     /**
-     * Update the specified order in storage.
+     * @OA\Put(
+     *     path="/orders/{id}",
+     *     summary="Update an existing order",
+     *     tags={"Orders"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Order ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Order")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Order updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Order")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Order not found"
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -114,7 +196,27 @@ class OrdersController extends Controller
     }
 
     /**
-     * Remove the specified order from storage.
+     * @OA\Delete(
+     *     path="/orders/{id}",
+     *     summary="Delete a specific order",
+     *     tags={"Orders"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Order ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Order deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Order not found"
+     *     )
+     * )
      */
     public function destroy($id)
     {

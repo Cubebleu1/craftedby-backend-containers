@@ -13,6 +13,35 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class BusinessesController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/businesses",
+     *     summary="List all businesses",
+     *     tags={"Businesses"},
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Search by partial business name",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="specialty",
+     *         in="query",
+     *         description="Filter by specialty",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Business")
+     *         )
+     *     )
+     * )
+     */
     public function index(Request $request): ResourceCollection
     {
         //Pass the business param to request
@@ -42,6 +71,26 @@ class BusinessesController extends Controller
         return BusinessResource::collection($businesses);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/businesses/{id}",
+     *     summary="Display a specific business",
+     *     tags={"Businesses"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Business ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Business")
+     *     ),
+     *     @OA\Response(response=404, description="Business not found")
+     * )
+     */
     public function show(Request $request, $id) : BusinessResource
     {
         $request->merge(['business' => true]);
@@ -51,6 +100,24 @@ class BusinessesController extends Controller
 
     }
 
+    /**
+     * @OA\Post(
+     *     path="/businesses",
+     *     summary="Create a new business",
+     *     tags={"Businesses"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Business")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Business created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Business")
+     *     ),
+     *     @OA\Response(response="default", description="Unexpected error")
+     * )
+     */
     public function store(StoreBusinessRequest $request)
     {
         $this->authorize('create', Business::class);
@@ -73,6 +140,27 @@ class BusinessesController extends Controller
         return response()->json($business, 201);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/businesses/{id}",
+     *     summary="Update an existing business",
+     *     tags={"Businesses"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Business ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Business")
+     *     ),
+     *     @OA\Response(response=200, description="Business updated successfully"),
+     *     @OA\Response(response=404, description="Business not found")
+     * )
+     */
     public function update(UpdateBusinessRequest $request, $id)
     {
         $business = Business::findorFail($id);
@@ -87,6 +175,23 @@ class BusinessesController extends Controller
         return response()->json($business);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/businesses/{id}",
+     *     summary="Delete a business",
+     *     tags={"Businesses"},
+     *     security={ {"sanctum": {} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Business ID",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(response=200, description="Business deleted successfully"),
+     *     @OA\Response(response=404, description="Business not found")
+     * )
+     */
     public function destroy($id)
     {
         $business = Business::findorFail($id);
