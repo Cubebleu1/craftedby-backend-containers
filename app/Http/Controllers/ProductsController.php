@@ -126,6 +126,11 @@ class ProductsController extends Controller
             $maxPrice = $request->input('priceRange.max');
             $query->where('price', '<=', $maxPrice);
         }
+        //Filter (non)customisable products
+        if ($request->has('customisable')) {
+            $customisable = $request->input('customisable');
+            $query->where('customisable', '=', $customisable);
+        }
 
         //Execute query (with eager loading) and get results
         $products = $query->with('business', 'material', 'color', 'reviews')->get();
