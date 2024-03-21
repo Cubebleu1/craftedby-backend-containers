@@ -30,7 +30,7 @@ class StoreUserRequest extends FormRequest
             'city' => 'string|max:255',
             'phone_number' => 'string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|confirmed|min:6',
             'remember-token' => 'string|max:255'
         ];
     }

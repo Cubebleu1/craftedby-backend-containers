@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Hash;
@@ -67,7 +68,7 @@ class UsersController extends Controller
      *     )
      * )
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): JsonResponse
     {
         //Pass the user param to request
         $request->merge(['user' => true]);
@@ -85,9 +86,14 @@ class UsersController extends Controller
             $user->roles()->attach($regularUserRole->id);
         }
 
+//        return new UserResource($user);
+
+        $token = $user->createToken('api-token')->plainTextToken;
+
         return response()->json([
             'message' => 'User successfully registered',
-            'created user' => $user,
+            'token' => $token,
+            'user' => $user,
         ], 201);
     }
 
