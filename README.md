@@ -214,6 +214,12 @@ The API token (Bearer token) should be sent with the request.
 
 If an error occurs while processing a request, the API will return a JSON object with an `error` field and a `message` field. The `error` field will be set to `true` if an error occurred, and `false` otherwise. The `message` field will contain a description of the error.
 
+## Debugging
+
+**Telescope** provides insight into the requests coming into the application, exceptions, log entries, database queries, queued jobs, mail, notifications, cache operations, scheduled tasks, variable dumps and more.
+
+To use telescope follow the `/telescope` url   
+
 ## License
 
 This documentation is licensed under the MIT License.
