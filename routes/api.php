@@ -5,6 +5,7 @@ use App\Http\Controllers\BusinessesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Resources\ProductResource;
@@ -25,16 +26,10 @@ use Illuminate\Support\Facades\Route;
 
 //Users routes
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth:sanctum');
-//Register user
 Route::get('/users/{id}', [UsersController::class, 'show'])->middleware('auth:sanctum');
 Route::patch('/users/{id}', [UsersController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('/users/{id}', [UsersController::class, 'destroy'])->middleware('auth:sanctum');
 Route::post('/users', [UsersController::class, 'store']);
-
-
-//Login and logout functionality
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 //Products routes
 Route::get('/products', [ProductsController::class, 'index']);
@@ -70,3 +65,9 @@ Route::get('/orders/{id}', [OrdersController::class, 'show'])->middleware('auth:
 Route::post('/orders', [OrdersController::class, 'store']);
 Route::put('/orders/{id}', [OrdersController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('/orders/{id}', [OrdersController::class, 'destroy'])->middleware('auth:sanctum');
+
+//Auth routes
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/password/reset-link', [ResetPasswordController::class, 'sendResetLinkEmail']);
+Route::post('/password/reset', [ResetPasswordController::class, 'reset']);
