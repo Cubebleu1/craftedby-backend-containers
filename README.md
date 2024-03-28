@@ -10,7 +10,7 @@ Required dependencies for the CraftedBy API project:
 
 - PHP 8.0 or higher
 - Composer 2.0 or higher
-- MariaDB 10.4 or higher
+- MariaDB 10.4 / MySQL 8.0 or higher
 
 Make sure that you have these dependencies installed on your system before installing the project. 
 You can check if you have PHP, Composer and MariaDB installed by running the following commands in your terminal:

@@ -130,11 +130,11 @@ class BusinessesController extends Controller
 
         // Add business_owner role to user
         $user = User::findOrFail($validatedData['user_id']);
-        // Retrieve the regular_user role
-        $regularUserRole = Role::where('name', 'business_owner')->first();
-        // Check if the regular_user role exists and attach it to the user
-        if ($regularUserRole) {
-            $user->roles()->attach($regularUserRole->id);
+        // Retrieve the business_owner role
+        $businessUserRole = Role::where('name', 'business_owner')->first();
+        // Check if the business_owner role exists and attach it to the user
+        if ($businessUserRole) {
+            $user->roles()->attach($businessUserRole->id);
         }
 
         return response()->json($business, 201);

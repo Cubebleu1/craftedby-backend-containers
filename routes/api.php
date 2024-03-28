@@ -7,6 +7,8 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\SpecialtiesController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UsersController;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
@@ -66,8 +68,16 @@ Route::post('/orders', [OrdersController::class, 'store']);
 Route::put('/orders/{id}', [OrdersController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('/orders/{id}', [OrdersController::class, 'destroy'])->middleware('auth:sanctum');
 
+//Specialities
+Route::get('/specialties', [SpecialtiesController::class, 'index']);
+
 //Auth routes
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/password/reset-link', [ResetPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/password/reset', [ResetPasswordController::class, 'reset']);
+
+//Stripe payment
+Route::post('/payment/initiate', [StripeController::class, 'initiatePayment']);
+Route::post('/payment/complete', [StripeController::class, 'completePayment']);
+Route::post('/payment/failure', [StripeController::class, 'failPayment']);

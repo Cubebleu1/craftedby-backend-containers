@@ -23,6 +23,7 @@ class StoreBusinessRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => 'required|uuid',
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'postal_code' => 'required|string|max:10',
@@ -31,10 +32,11 @@ class StoreBusinessRequest extends FormRequest
             'email' => 'required|email|max:255',
             'phone_number' => 'required|string|max:20',
             'siret' => 'required|numeric|digits:14',
-//            'craft_id' => 'required|uuid',
+            'craft_id' => 'required|uuid',
             'website' => 'nullable|string|max:255',
             'biography' => 'nullable|string',
             'history' => 'nullable|string',
+            'theme_id' => 'required|uuid',
         ];
     }
     public function messages(): array
