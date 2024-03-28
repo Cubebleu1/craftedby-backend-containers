@@ -14,12 +14,11 @@ class ThemeSeeder extends Seeder
     public function run(): void
     {
         $themes = [
-            'Light',
-            'Dark',
-            'Garden',
-            'Forest',
-            'Cupcake',
-            'Luxury',
+            'pastel',
+            'autumn',
+            'garden',
+            'retro',
+            'artisan',
         ];
         foreach ($themes as $theme) {
             Theme::firstOrCreate(['name' => $theme,]);        }
