@@ -22,15 +22,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone_number');
             $table->bigInteger('siret');
-            $table->foreignUuid('craft_id')->nullable();
+            $table->foreignUuid('specialty_id')->nullable();
             $table->string('website')->nullable();
             $table->text('biography')->nullable();
             $table->text('history')->nullable();
             $table->foreignUuid('theme_id')->nullable();
             $table->timestamps();
-            $table->foreign('craft_id')
+            $table->foreign('specialty_id')
                 ->references('id')
-                ->on('crafts')
+                ->on('specialties')
                 ->onDelete('cascade');
             $table->foreign('theme_id')
                 ->references('id')

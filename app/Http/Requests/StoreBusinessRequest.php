@@ -32,7 +32,7 @@ class StoreBusinessRequest extends FormRequest
             'email' => 'required|email|max:255',
             'phone_number' => 'required|string|max:20',
             'siret' => 'required|numeric|digits:14',
-            'craft_id' => 'required|uuid',
+            'specialty_id' => 'required|uuid',
             'website' => 'nullable|string|max:255',
             'biography' => 'nullable|string',
             'history' => 'nullable|string',

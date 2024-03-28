@@ -21,18 +21,18 @@ class BusinessSeeder extends Seeder
         Business::factory()
             ->for(User::factory())
             ->state(function() {
-                //Random craft or create one if crafts aren't seeded.
-                $craft = Craft::inRandomOrder()->first() ?: Craft::factory()->create();
+                //Random specialty or create one if specialties aren't seeded.
+                $specialty = Specialty::inRandomOrder()->first() ?: Specialty::factory()->create();
                 //Random theme or create one if themes aren't seeded.
                 $theme = Theme::inRandomOrder()->first() ?: Theme::factory()->create();
                 return [
-                    'craft_id' => $craft->id,
+                    'specialty_id' => $specialty->id,
                     'theme_id' => $theme->id,
                 ];
             })
             ->afterCreating(function (Business $business) {
-                $specialties = Specialty::inRandomOrder()->take(2)->get();
-                $business->specialties()->attach($specialties);
+//                $specialties = Specialty::inRandomOrder()->take(2)->get();
+//                $business->specialties()->attach($specialties);
 
                 // Retrieve the business_owner role
                 $businessOwnerRole = Role::where('name', 'business_owner')->first();

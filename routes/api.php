@@ -9,10 +9,8 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\SpecialtiesController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\ThemesController;
 use App\Http\Controllers\UsersController;
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,6 +68,9 @@ Route::delete('/orders/{id}', [OrdersController::class, 'destroy'])->middleware(
 
 //Specialities
 Route::get('/specialties', [SpecialtiesController::class, 'index']);
+
+//Themes
+Route::get('/themes', [ThemesController::class, 'index']);
 
 //Auth routes
 Route::post('/login', [AuthController::class, 'login']);

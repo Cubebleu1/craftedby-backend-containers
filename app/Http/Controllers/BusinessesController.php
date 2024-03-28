@@ -8,6 +8,7 @@ use App\Http\Resources\BusinessResource;
 use App\Models\Business;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -118,7 +119,7 @@ class BusinessesController extends Controller
      *     @OA\Response(response="default", description="Unexpected error")
      * )
      */
-    public function store(StoreBusinessRequest $request)
+    public function store(StoreBusinessRequest $request): JsonResponse
     {
         $this->authorize('create', Business::class);
 
