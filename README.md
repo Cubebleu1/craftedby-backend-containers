@@ -84,6 +84,8 @@ php artisan db:seed --class=DatabaseSeeder
 
 ```
 php artisan serve
+
+(optional: add "--host=0.0.0.0" for local network accessibility)
 ```
 
 You should now be able to access the API on `localhost`. See the API list for possible routes.

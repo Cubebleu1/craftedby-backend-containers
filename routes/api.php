@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/users', [UsersController::class, 'index'])->middleware('auth:sanctum');
 Route::get('/users/{id}', [UsersController::class, 'show'])->middleware('auth:sanctum');
 Route::patch('/users/{id}', [UsersController::class, 'update'])->middleware('auth:sanctum');
+//Route::put('/users/{id}', [UsersController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('/users/{id}', [UsersController::class, 'destroy'])->middleware('auth:sanctum');
 Route::post('/users', [UsersController::class, 'store']);
 
@@ -74,6 +75,7 @@ Route::get('/themes', [ThemesController::class, 'index']);
 
 //Auth routes
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/current-user', [AuthController::class, 'currentUser']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/password/reset-link', [ResetPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/password/reset', [ResetPasswordController::class, 'reset']);

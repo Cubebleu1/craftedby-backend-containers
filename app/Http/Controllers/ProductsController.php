@@ -8,7 +8,9 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use OpenApi\Annotations as OA;
 
 class ProductsController extends Controller
 {
@@ -73,6 +75,7 @@ class ProductsController extends Controller
      * )
      */
     public function index(Request $request): ResourceCollection
+//    public function index(Request $request): PaginatedResourceResponse
     {
         //Pass the product param to request
         $request->merge(['product' => true]);
@@ -81,13 +84,14 @@ class ProductsController extends Controller
         $query = Product::query();
 
         // Search for products by name or other attributes
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $search = $request->input('search');
             //LIKE operator for a partial match search
-            $query->where('name', 'LIKE', "%{$search}%");
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%");
         }
         // Filter by category
-        if ($request->has('category')) {
+        if ($request->filled('category')) {
             $category = $request->input('category');
             //Wherehas for querying relationships
             $query->whereHas('categories', function ($query) use ($category) {
@@ -95,47 +99,49 @@ class ProductsController extends Controller
             });
         }
         //Filter by color
-        if ($request->has('color')) {
+        if ($request->filled('color')) {
             $color = $request->input('color');
             $query->whereHas('color', function ($query) use ($color) {
                 $query->where('name', $color);
             });
         }
         //Filter by material
-        if ($request->has('material')) {
+        if ($request->filled('material')) {
             $material = $request->input('material');
             $query->whereHas('material', function ($query) use ($material) {
                 $query->where('name', $material);
             });
         }
         // Filter by rating
-        if ($request->has('rating')) {
+        if ($request->filled('rating')) {
             $rating = $request->input('rating');
             $query->whereHas('reviews', function ($query) use ($rating) {
                 $query->where('rating', '=', $rating);
             });
         }
         // Filter by minimum price
-        if ($request->has('priceRange.min')) {
+        if ($request->filled('priceRange.min')) {
             $minPrice = $request->input('priceRange.min');
             $query->where('price', '>=', $minPrice);
         }
 
         // Filter by maximum price
-        if ($request->has('priceRange.max')) {
+        if ($request->filled('priceRange.max')) {
             $maxPrice = $request->input('priceRange.max');
             $query->where('price', '<=', $maxPrice);
         }
         //Filter (non)customisable products
-        if ($request->has('customisable')) {
+        if ($request->filled('customisable')) {
             $customisable = $request->input('customisable');
             $query->where('customisable', '=', $customisable);
         }
 
         //Execute query (with eager loading) and get results
-        $products = $query->with('business', 'material', 'color', 'reviews')->get();
+//        $products = $query->with('business', 'material', 'color', 'reviews')->get();
+        $products = $query->with('business', 'material', 'color', 'reviews')->paginate(12);
 
         return ProductResource::collection($products);
+//        return ProductResource::paginate(10);
 
     }
 

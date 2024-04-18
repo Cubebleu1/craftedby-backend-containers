@@ -28,6 +28,8 @@ class OrderResource extends JsonResource
             'tax_amount' => $this->tax_amount,
             'total_tax_included' => $this->total_tax_included,
             'payment_status' => $this->payment_status,
+            'created_at' => $this->created_at,
+            'products' => ProductResource::collection($this->products),
                 $this->mergeWhen($request->user()->isAdmin(), [
                     'user' => new UserResource($this->user),
                 ])

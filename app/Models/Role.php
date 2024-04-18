@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $table = 'roles';
+    protected $fillable = [
+        'name',
+    ];
 }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use OpenApi\Annotations as OA;
 
 class AuthController extends Controller
 {
@@ -51,16 +53,20 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        $request->merge(['user' => true]);
+
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'remember-me'=> 'sometimes | boolean'
+
         ]);
 
-        if (Auth::attempt($credentials)) {
-            //no session for API
-//            $request->session()->regenerate();
-            $user = Auth::user();
-            $token = $user->createToken('api-token')->plainTextToken;
+        $remember = $request->filled('remember') ? $request->remember : false;
+
+        if (Auth::attempt($credentials, $remember)) {
+            $user = new UserResource(Auth::user());
+            $token = Auth::user()->createToken('api-token')->plainTextToken;
 
             return response()->json([
                 'message' => 'Login successful',
@@ -75,11 +81,12 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        //no session for API
-//        $request->session()->invalidate();
-//        $request->session()->regenerateToken();
-
         return response()->json(['message' => 'Logged out successfully']);
+    }
+
+    public function currentUser(Request $request)
+    {
+        return $request->user() ? new UserResource($request->user()) : abort(403);
     }
 
 }

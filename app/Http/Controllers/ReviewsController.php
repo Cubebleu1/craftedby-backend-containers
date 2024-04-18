@@ -7,6 +7,7 @@ use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use OpenApi\Annotations as OA;
 
 class ReviewsController extends Controller
 {

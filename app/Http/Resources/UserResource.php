@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -31,10 +32,12 @@ class UserResource extends JsonResource
                 'city' => $this->city,
                 'email' => $this->email,
                 'phone_number' => $this->phone_number,
+                'role' => RoleResource::collection($this->roles),
             ]),
                 $this->mergeWhen($request->single_user, [
                 'reviews' => ReviewResource::collection($this->reviews),
-                ]),
+                'orders' => OrderResource::collection($this->orders)
+                    ]),
         ];
     }
 }
