@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use OpenApi\Annotations as OA;
 
-class ReviewsController extends Controller
+class ReviewController extends Controller
 {
     /**
      * @OA\Get(

@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ThemeResource;
-use App\Models\Theme;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\MaterialResource;
+use App\Models\Material;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ThemesController extends Controller
+class MaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): ResourceCollection
     {
-        //Pass the review param to request
-        $request->merge(['review' => true]);
+//        //Pass the review param to request
+//        $request->merge(['review' => true]);
 
-        $query = Theme::query();
+        $query = Material::query();
 
         $themes = $query -> get();
 
-        return ThemeResource::collection($themes);
+        return MaterialResource::collection($themes);
     }
 
     /**
@@ -43,7 +43,7 @@ class ThemesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Theme $theme)
+    public function show(Material $material)
     {
         //
     }
@@ -51,7 +51,7 @@ class ThemesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Theme $theme)
+    public function edit(Material $material)
     {
         //
     }
@@ -59,7 +59,7 @@ class ThemesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Theme $theme)
+    public function update(Request $request, Material $material)
     {
         //
     }
@@ -67,7 +67,7 @@ class ThemesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Theme $theme)
+    public function destroy(Material $material)
     {
         //
     }

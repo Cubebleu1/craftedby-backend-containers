@@ -155,8 +155,10 @@ class UsersController extends Controller
      *     @OA\Response(response=404, description="User not found")
      * )
      */
-    public function update(UpdateUserRequest $request, string $id)
+    public function update(UpdateUserRequest $request, string $id): UserResource
     {
+        $request->merge(['user' => true]);
+
         $user = User::findOrFail($id);
 
         //Authorize user with policy method
@@ -192,10 +194,12 @@ class UsersController extends Controller
 
         $user->save();
 
-        return response()->json([
-            'message' => 'User updated successfully',
-            'user' => $user,
-        ]);
+        return new UserResource($user);
+
+//        return response()->json([
+//            'message' => 'User updated successfully',
+//            'user' => $user,
+//        ]);
     }
 
     /**

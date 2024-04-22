@@ -1,15 +1,16 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BusinessesController;
-use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\OrdersController;
-use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\ReviewsController;
-use App\Http\Controllers\SpecialtiesController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\StripeController;
-use App\Http\Controllers\ThemesController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,45 +34,48 @@ Route::delete('/users/{id}', [UsersController::class, 'destroy'])->middleware('a
 Route::post('/users', [UsersController::class, 'store']);
 
 //Products routes
-Route::get('/products', [ProductsController::class, 'index']);
-Route::get('/products/{id}', [ProductsController::class, 'show']);
-Route::post('/products', [ProductsController::class, 'store'])->middleware('auth:sanctum');
-Route::put('/products/{id}', [ProductsController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::post('/products', [ProductController::class, 'store'])->middleware('auth:sanctum');
+Route::put('/products/{id}', [ProductController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/products/{id}', [ProductController::class, 'destroy'])->middleware('auth:sanctum');
 
 //Categories routes
-Route::get('/categories', [CategoriesController::class, 'index']);
-Route::get('/categories/{id}', [CategoriesController::class, 'show']);
-Route::post('/categories', [CategoriesController::class, 'store'])->middleware('auth:sanctum');
-Route::put('/categories/{id}', [CategoriesController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('/categories/{id}', [CategoriesController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::post('/categories', [CategoryController::class, 'store'])->middleware('auth:sanctum');
+Route::put('/categories/{id}', [CategoryController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->middleware('auth:sanctum');
 
 //Reviews routes
-Route::get('/reviews', [ReviewsController::class, 'index']);
-Route::get('/reviews/{id}', [ReviewsController::class, 'show']);
-Route::post('/reviews', [ReviewsController::class, 'store'])->middleware('auth:sanctum');
-Route::put('/reviews/{id}', [ReviewsController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('/reviews/{id}', [ReviewsController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/reviews', [ReviewController::class, 'index']);
+Route::get('/reviews/{id}', [ReviewController::class, 'show']);
+Route::post('/reviews', [ReviewController::class, 'store'])->middleware('auth:sanctum');
+Route::put('/reviews/{id}', [ReviewController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->middleware('auth:sanctum');
 
 //Businesses routes
-Route::get('/businesses', [BusinessesController::class, 'index']);
-Route::get('/businesses/{id}', [BusinessesController::class, 'show']);
-Route::post('/businesses', [BusinessesController::class, 'store'])->middleware('auth:sanctum');
-Route::put('/businesses/{id}', [BusinessesController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('/businesses/{id}', [BusinessesController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/businesses', [BusinessController::class, 'index']);
+Route::get('/businesses/{id}', [BusinessController::class, 'show']);
+Route::post('/businesses', [BusinessController::class, 'store'])->middleware('auth:sanctum');
+Route::put('/businesses/{id}', [BusinessController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/businesses/{id}', [BusinessController::class, 'destroy'])->middleware('auth:sanctum');
 
 //Orders routes
-Route::get('/orders', [OrdersController::class, 'index'])->middleware('auth:sanctum');
-Route::get('/orders/{id}', [OrdersController::class, 'show'])->middleware('auth:sanctum');
-Route::post('/orders', [OrdersController::class, 'store']);
-Route::put('/orders/{id}', [OrdersController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('/orders/{id}', [OrdersController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/orders', [OrderController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/orders/{id}', [OrderController::class, 'show'])->middleware('auth:sanctum');
+Route::post('/orders', [OrderController::class, 'store']);
+Route::put('/orders/{id}', [OrderController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->middleware('auth:sanctum');
 
 //Specialities
-Route::get('/specialties', [SpecialtiesController::class, 'index']);
+Route::get('/specialties', [SpecialtyController::class, 'index']);
 
 //Themes
-Route::get('/themes', [ThemesController::class, 'index']);
+Route::get('/themes', [ThemeController::class, 'index']);
+
+//Materials
+Route::get('/materials', [MaterialController::class, 'index']);
 
 //Auth routes
 Route::post('/login', [AuthController::class, 'login']);

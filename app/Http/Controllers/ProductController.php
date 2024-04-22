@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use OpenApi\Annotations as OA;
 
-class ProductsController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a list of products, with optional filters
@@ -85,6 +85,11 @@ class ProductsController extends Controller
 
         // Search for products by name or other attributes
         if ($request->filled('search')) {
+
+            $request->validate([
+                'search' => 'required|string',
+            ]);
+
             $search = $request->input('search');
             //LIKE operator for a partial match search
             $query->where('name', 'LIKE', "%{$search}%")
@@ -92,6 +97,10 @@ class ProductsController extends Controller
         }
         // Filter by category
         if ($request->filled('category')) {
+
+            $request->validate([
+                'category' => 'required|string',
+            ]);
             $category = $request->input('category');
             //Wherehas for querying relationships
             $query->whereHas('categories', function ($query) use ($category) {

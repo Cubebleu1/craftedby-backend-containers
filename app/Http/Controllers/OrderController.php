@@ -6,11 +6,12 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use OpenApi\Annotations as OA;
 
-class OrdersController extends Controller
+class OrderController extends Controller
 {
     /**
      * @OA\Get(
@@ -36,7 +37,7 @@ class OrdersController extends Controller
      *     )
      * )
      */
-    public function index(Request $request) : ResourceCollection
+    public function index(Request $request): ResourceCollection
     {
         //Authorize user(admin) with policy method
         $this->authorize('viewAny', User::class);
@@ -132,7 +133,7 @@ class OrdersController extends Controller
      *     )
      * )
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, $id): OrderResource
     {
         //Pass the order param to request
         $request->merge(['order' => true]);
@@ -140,10 +141,12 @@ class OrdersController extends Controller
         $order = Order::find($id);
 
         if (!$order) {
-            return response()->json(['message' => 'Order not found'], 404);
+            throw new ModelNotFoundException('Order not found');
         }
 
-        return response()->json($order);
+        return new OrderResource($order);
+
+//        return response()->json($order);
     }
 
     /**

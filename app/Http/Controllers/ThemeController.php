@@ -2,25 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\SpecialtyResource;
-use App\Models\Specialty;
+use App\Http\Resources\ThemeResource;
+use App\Models\Theme;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class SpecialtiesController extends Controller
+class ThemeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): ResourceCollection
     {
-        //Pass the review param to request
-        $request->merge(['review' => true]);
+//        //Pass the review param to request
+//        $request->merge(['review' => true]);
 
-        $query = Specialty::query();
+        $query = Theme::query();
 
-        $specialties = $query -> get();
+        $themes = $query -> get();
 
-        return SpecialtyResource::collection($specialties);
+        return ThemeResource::collection($themes);
     }
 
     /**
@@ -42,7 +44,7 @@ class SpecialtiesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Specialty $specialty)
+    public function show(Theme $theme)
     {
         //
     }
@@ -50,7 +52,7 @@ class SpecialtiesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Specialty $specialty)
+    public function edit(Theme $theme)
     {
         //
     }
@@ -58,7 +60,7 @@ class SpecialtiesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Specialty $specialty)
+    public function update(Request $request, Theme $theme)
     {
         //
     }
@@ -66,7 +68,7 @@ class SpecialtiesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Specialty $specialty)
+    public function destroy(Theme $theme)
     {
         //
     }
