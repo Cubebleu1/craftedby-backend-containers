@@ -18,6 +18,6 @@ jobs:
 
     - name: release image
       run: |
-        echo "Logging to docker hub and pushing image to ${{ DOCKER_HUB_REPO }}/craftedby-backend"
+        echo "Logging to docker hub and pushing image to ${{ vars.DOCKER_HUB_REPO }}/craftedby-backend"
         docker login -u ${{ vars.DOCKER_HUB_USERNAME }} -p ${{ vars.DOCKER_HUB_PASSWORD }}
         docker push ${{ vars.DOCKER_HUB_REPO }}/craftedby-backend:v1.0.0
