@@ -30,5 +30,6 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
+        context: .
         push: true
         tags: ${{ vars.DOCKER_HUB_REPO }}/craftedby-backend:v1.0.0
