@@ -14,10 +14,10 @@ jobs:
       run: |
         echo "Building image..."
         docker build -t craftedby-backend
-        docker image tag craftedby-backend ${{ DOCKER_HUB_REPO }}/craftedby-backend:v1.0.0
+        docker image tag craftedby-backend ${{ vars.DOCKER_HUB_REPO }}/craftedby-backend:v1.0.0
 
     - name: release image
       run: |
         echo "Logging to docker hub and pushing image to ${{ DOCKER_HUB_REPO }}/craftedby-backend"
         docker login -u ${{ vars.DOCKER_HUB_USERNAME }} -p ${{ vars.DOCKER_HUB_PASSWORD }}
-        docker push ${{ DOCKER_HUB_REPO }}/craftedby-backend:v1.0.0
+        docker push ${{ vars.DOCKER_HUB_REPO }}/craftedby-backend:v1.0.0
