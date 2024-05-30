@@ -23,10 +23,10 @@ RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 # Copy configuration files
-COPY nginx.conf /etc/nginx/sites-available/default
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY configuration/nginx.conf /etc/nginx/sites-available/default
+COPY configuration/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY .env.example .env
-COPY fpm.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+COPY configuration/fpm.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Permissions given to the www-data user
 RUN chown -R :www-data /usr/src/fabriquepar
