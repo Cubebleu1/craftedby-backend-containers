@@ -5,6 +5,7 @@ on:
 
 jobs:
   release-image:
+    environment: 'Apalia - Lab'
     name: build docker image
     runs-on: docker:26-cli
 
