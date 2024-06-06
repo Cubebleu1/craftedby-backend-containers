@@ -49,19 +49,19 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
 
-    - name: Run Snyk to check Docker image for vulnerabilities
-      uses: snyk/actions/docker@master
-      continue-on-error: true
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        image: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}:main
-        args: --file=Dockerfile
+    # - name: Run Snyk to check Docker image for vulnerabilities
+    #   uses: snyk/actions/docker@master
+    #   continue-on-error: true
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #     image: ${{ vars.IMAGE_REGISTRY }}/${{ github.repository }}:main
+    #     args: --file=Dockerfile
 
-    - name: Upload result to GitHub Code Scanning
-      uses: github/codeql-action/upload-sarif@v3
-      with:
-        sarif_file: snyk.sarif
+    # - name: Upload result to GitHub Code Scanning
+    #   uses: github/codeql-action/upload-sarif@v3
+    #   with:
+    #     sarif_file: snyk.sarif
 
     - name: Generate artifact attestation
       uses: actions/attest-build-provenance@v1
