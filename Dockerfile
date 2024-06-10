@@ -4,8 +4,8 @@ FROM php:8.2-fpm
 RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql
 RUN apt-get update && apt-get install -y nginx supervisor zip unzip git
 
-COPY . /var/wwww/html/fabriquepar
-WORKDIR /var/wwww/html/fabriquepar
+COPY . /var/www/html/fabriquepar
+WORKDIR /var/www/html/fabriquepar
 
 # Create fpm socket directories
 RUN mkdir /run/php && mkdir /run/supervisor
@@ -24,27 +24,26 @@ COPY configuration/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY .env.example .env
 COPY configuration/fpm.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
-# Permissions given to the www-data user a rootless usage
-RUN chown -R www-data:www-data /var/wwww/html/fabriquepar && \
-    chown -R www-data:www-data /run/php && \
-    chown -R www-data:www-data /run/supervisor && \
-    chown -R www-data:www-data /var/lib/nginx && \
-    chown -R www-data:www-data /var/log/nginx
+# Permissions given to the root (GID:0) group a rootless usage
+RUN chgrp -R root /var/www/html/fabriquepar && chmod -R g+rwX /var/www/html/fabriquepar && \
+    chgrp -R root /run/php && chmod -R g+rwX /run/php && \
+    chgrp -R root /run/supervisor && chmod -R g+rwX /run/supervisor && \
+    chgrp -R root /var/lib/nginx && chmod -R g+rwX /var/lib/nginx && \
+    chgrp -R root /var/log/nginx && chmod -R g+rwX /var/log/nginx
     
-RUN touch /run/supervisord.pid && chown www-data:www-data /run/supervisord.pid && \
-    touch /run/nginx.pid && chown www-data:www-data /run/nginx.pid
+RUN touch /run/supervisord.pid && chgrp root /run/supervisord.pid && chmod -R g+rwX /run/supervisord.pid && \
+    touch /run/nginx.pid && chgrp root /run/nginx.pid && chmod -R g+rwX /run/nginx.pid
 
-RUN chmod -R 775 /var/wwww/html/fabriquepar/storage
-RUN chmod -R 775 /var/wwww/html/fabriquepar/bootstrap/cache
-
+RUN chmod -R 775 /var/www/html/fabriquepar/storage
+RUN chmod -R 775 /var/www/html/fabriquepar/bootstrap/cache
 
 # Install composer packages
 RUN composer update
 RUN composer install
 RUN php artisan key:generate
 
-USER www-data
+USER 1001:root
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["/usr/bin/supervisord"]
