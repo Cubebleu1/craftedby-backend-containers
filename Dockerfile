@@ -46,4 +46,7 @@ USER 1001:root
 
 EXPOSE 8080
 
+LABEL org.opencontainer.image.description "Rootless docker image for the backend project from the https://github.com/Adrew-Kirts/craftedby-backend project"
+LABEL rootless true
+
 CMD ["/usr/bin/supervisord"]
