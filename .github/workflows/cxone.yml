@@ -16,7 +16,7 @@ jobs:
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
           branch: main
-          additional_params: --threshold "sast-high=10; sast-medium=20; sca-high=10" --report-format sarif --output-path .
+          additional_params: --threshold "sast-high=10; sast-medium=20; sca-high=10" --report-format sarif --output-path . -s ${{ github.server_url }}/${{ github.repository }}
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
